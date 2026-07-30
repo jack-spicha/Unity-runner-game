@@ -9,6 +9,23 @@ public class Movement : MonoBehaviour
 
     public GameManager gameManager;
 
+    private InputSystem_Actions inputActions;
+
+    private void Awake()
+    {
+        inputActions = new InputSystem_Actions();
+    }
+
+    private void OnEnable()
+    {
+        inputActions.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
     private void Update()
     {
         if (!gameManager.gameRunning)
@@ -17,21 +34,16 @@ public class Movement : MonoBehaviour
         }
 
         // Forward movement
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.Translate(
+            Vector3.forward * speed * Time.deltaTime
+        );
+
+        // Read all movement input through the Input System
+        Vector2 moveInput = inputActions.Player.Move.ReadValue<Vector2>();
+
+        float horizontalInput = moveInput.x;
 
         // Sideways movement
-        float horizontalInput = 0f;
-
-        if (Keyboard.current.aKey.isPressed)
-        {
-            horizontalInput = -1f;
-        }
-
-        if (Keyboard.current.dKey.isPressed)
-        {
-            horizontalInput = 1f;
-        }
-
         transform.Translate(
             Vector3.right *
             horizontalInput *
