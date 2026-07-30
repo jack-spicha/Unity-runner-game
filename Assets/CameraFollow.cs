@@ -1,11 +1,30 @@
 using UnityEngine;
-public class CameraFollow : MonoBehaviour
-{    public Transform target;
-    public Vector3 offset = new Vector3(0f, 3f, -5f);
 
-    void LateUpdate()
+public class CameraFollow : MonoBehaviour
+{
+    public Transform target;
+    public float zOffset = -5f;
+
+    private float fixedX;
+    private float fixedY;
+
+    private void Start()
     {
-        if (target == null) return;
-        transform.position = target.position + offset;
+        fixedX = transform.position.x;
+        fixedY = transform.position.y;
+    }
+
+    private void LateUpdate()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        transform.position = new Vector3(
+            fixedX,
+            fixedY,
+            target.position.z + zOffset
+        );
     }
 }
