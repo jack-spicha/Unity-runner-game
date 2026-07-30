@@ -7,12 +7,19 @@ public class Movement : MonoBehaviour
     public float sidewaysSpeed = 8f;
     public float maxX = 5f;
 
+    public GameManager gameManager;
+
     private void Update()
     {
-        // Move forward
+        if (!gameManager.gameRunning)
+        {
+            return;
+        }
+
+        // Forward movement
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
-        // Get sideways input
+        // Sideways movement
         float horizontalInput = 0f;
 
         if (Keyboard.current.aKey.isPressed)
@@ -25,12 +32,30 @@ public class Movement : MonoBehaviour
             horizontalInput = 1f;
         }
 
-        // Move left/right
-        transform.Translate(Vector3.right * horizontalInput * sidewaysSpeed * Time.deltaTime);
+        transform.Translate(
+            Vector3.right *
+            horizontalInput *
+            sidewaysSpeed *
+            Time.deltaTime
+        );
 
-        // Stop player going beyond the edges
+        // Keep player on platform
         Vector3 position = transform.position;
-        position.x = Mathf.Clamp(position.x, -maxX, maxX);
+
+        position.x = Mathf.Clamp(
+            position.x,
+            -maxX,
+            maxX
+        );
+
         transform.position = position;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            gameManager.Die();
+        }
     }
 }

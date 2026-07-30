@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GroundManager : MonoBehaviour
+public class GroundMovement : MonoBehaviour
 {
     public Transform player;
     public Transform[] groundPieces;

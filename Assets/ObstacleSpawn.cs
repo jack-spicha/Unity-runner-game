@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class ObstacleManager : MonoBehaviour
+public class ObstacleSpawn : MonoBehaviour
 {
     public Transform player;
     public GameObject obstaclePrefab;
     public Transform obstacleParent;
+    public GameManager gameManager;
 
     public float maxX = 5f;
     public float spawnDistance = 80f;
@@ -19,6 +20,12 @@ public class ObstacleManager : MonoBehaviour
 
     private void Update()
     {
+        // Do nothing unless the game is running
+        if (!gameManager.gameRunning)
+        {
+            return;
+        }
+
         // Spawn obstacles ahead
         while (nextSpawnZ < player.position.z + spawnDistance)
         {
